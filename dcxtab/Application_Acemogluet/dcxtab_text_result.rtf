@@ -1,0 +1,329 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww25860\viewh23560\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 . xtabond2 fhpolrigaug L.(fhpolrigaug lrgdpch) yr* if sample==1, gmm(L.(fhpolrigaug)) iv( yr*) iv(L2.lrgdpch, passthru) noleveleq twostep\
+Favoring speed over space. To switch, type or click on mata: mata set matafavor space, perm.\
+Warning: Two-step estimated covariance matrix of moments is singular.\
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.\
+  Difference-in-Sargan/Hansen statistics may be negative.\
+\
+Dynamic panel-data estimation, two-step difference GMM\
+------------------------------------------------------------------------------\
+Group variable: code_numeric                    Number of obs      =       838\
+Time variable : year_numeric                    Number of groups   =       127\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    349.70                                      avg =      6.60\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+ fhpolrigaug |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+ fhpolrigaug |\
+         L1. |   .5279104   .0471669    11.19   0.000      .435465    .6203558\
+             |\
+     lrgdpch |\
+         L1. |  -.0120682   .0476299    -0.25   0.800     -.105421    .0812846\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |   .1086197   .0324923     3.34   0.001      .044936    .1723034\
+         yr3 |   .1130643   .0262809     4.30   0.000     .0615547     .164574\
+         yr4 |   .0946837   .0221437     4.28   0.000     .0512828    .1380846\
+         yr5 |          0  (omitted)\
+         yr6 |   .0645459   .0191487     3.37   0.001     .0270151    .1020766\
+         yr7 |    .116498   .0233389     4.99   0.000     .0707547    .1622413\
+         yr8 |   .1258145   .0207856     6.05   0.000     .0850755    .1665535\
+         yr9 |   .1438229   .0252352     5.70   0.000     .0943627     .193283\
+        yr10 |   .1481182   .0295354     5.01   0.000     .0902299    .2060066\
+        yr11 |   .1603464   .0309061     5.19   0.000     .0997716    .2209213\
+------------------------------------------------------------------------------\
+Warning: Uncorrected two-step standard errors are unreliable.\
+\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.fhpolrigaug\
+------------------------------------------------------------------------------\
+Arellano-Bond test for AR(1) in first differences: z =  -5.47  Pr > z =  0.000\
+Arellano-Bond test for AR(2) in first differences: z =   0.82  Pr > z =  0.410\
+------------------------------------------------------------------------------\
+Sargan test of overid. restrictions: chi2(42)   =  51.93  Prob > chi2 =  0.140\
+  (Not robust, but not weakened by many instruments.)\
+Hansen test of overid. restrictions: chi2(42)   =  49.60  Prob > chi2 =  0.196\
+  (Robust, but weakened by many instruments.)\
+\
+Difference-in-Hansen tests of exogeneity of instrument subsets:\
+  iv(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+    Hansen test excluding group:     chi2(33)   =  33.91  Prob > chi2 =  0.424\
+    Difference (null H = exogenous): chi2(9)    =  15.69  Prob > chi2 =  0.074\
+  iv(L2.lrgdpch, passthru)\
+    Hansen test excluding group:     chi2(41)   =  49.26  Prob > chi2 =  0.176\
+    Difference (null H = exogenous): chi2(1)    =   0.34  Prob > chi2 =  0.561\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+ dcxtab fhpolrigaug L.(fhpolrigaug lrgdpch) yr* if sample==1, gmm(L.(fhpolrigaug)) iv( yr*) iv(L2.lrgdpch, passthru) noconstant vce(two)\
+       panel variable:  code_numeric (strongly balanced)\
+        time variable:  year_numeric, 31 to 41\
+                delta:  1 unit\
+(set matafavor preference recorded)\
+\
+Dynamic panel-data estimation: \
+Group variable: code_numeric                    Number of obs      =       838\
+Time variable : year_numeric                    Number of groups   =       127\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    193.14                                      avg =      6.60\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.fhpolrigaug\
+------------------------------------------------------------------------------\
+------------------------------------------------------------------------------\
+             |           Doubly-Corrected Robust Standard Errors for Two-step GMM estimator\
+ fhpolrigaug |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+ fhpolrigaug |\
+         L1. |   .5238601    .093748     5.59   0.000     .3401174    .7076028\
+             |\
+     lrgdpch |\
+         L1. |   -.012885   .0501432    -0.26   0.797    -.1111639    .0853938\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |  -.0483581   .0555802    -0.87   0.384    -.1572933    .0605771\
+         yr3 |  -.0361383   .0454489    -0.80   0.427    -.1252165    .0529399\
+         yr4 |  -.0572159   .0395166    -1.45   0.148     -.134667    .0202353\
+         yr5 |  -.1524152   .0337942    -4.51   0.000    -.2186506   -.0861798\
+         yr6 |  -.0876129   .0350601    -2.50   0.012    -.1563295   -.0188963\
+         yr7 |    -.03661   .0279442    -1.31   0.190    -.0913796    .0181597\
+         yr8 |  -.0286388   .0223754    -1.28   0.201    -.0724938    .0152162\
+         yr9 |  -.0073522   .0162574    -0.45   0.651    -.0392162    .0245117\
+        yr10 |          0  (omitted)\
+        yr11 |   .0108176   .0140017     0.77   0.440    -.0166252    .0382604\
+------------------------------------------------------------------------------\
+\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+\
+.   xtabond2 polity4 L.(polity4 lrgdpch) yr* if sample==1, gmm(L.(polity4)) iv( yr*) iv(L2.lrgdpch, passthru) noleveleq robust \
+Favoring speed over space. To switch, type or click on mata: mata set matafavor space, perm.\
+Warning: Two-step estimated covariance matrix of moments is singular.\
+  Using a generalized inverse to calculate robust weighting matrix for Hansen test.\
+  Difference-in-Sargan/Hansen statistics may be negative.\
+\
+Dynamic panel-data estimation, one-step difference GMM\
+------------------------------------------------------------------------------\
+Group variable: code_numeric                    Number of obs      =       747\
+Time variable : year_numeric                    Number of groups   =       114\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    149.63                                      avg =      6.55\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+             |               Robust\
+     polity4 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+     polity4 |\
+         L1. |    .589791   .1061764     5.55   0.000     .3816892    .7978929\
+             |\
+     lrgdpch |\
+         L1. |   -.350564   .1272232    -2.76   0.006     -.599917   -.1012111\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |          0  (omitted)\
+         yr3 |   .0516426   .0344813     1.50   0.134    -.0159396    .1192248\
+         yr4 |   .0758799   .0462853     1.64   0.101    -.0148376    .1665973\
+         yr5 |   .1365443   .0639409     2.14   0.033     .0112224    .2618662\
+         yr6 |   .1700867   .0810036     2.10   0.036     .0113225    .3288509\
+         yr7 |   .2425664   .0923725     2.63   0.009     .0615196    .4236132\
+         yr8 |   .3002859   .1053815     2.85   0.004     .0937419    .5068298\
+         yr9 |   .3882072    .113999     3.41   0.001     .1647732    .6116412\
+        yr10 |    .455968   .1302808     3.50   0.000     .2006223    .7113136\
+        yr11 |   .4374986   .1398705     3.13   0.002     .1633574    .7116398\
+------------------------------------------------------------------------------\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.polity4\
+------------------------------------------------------------------------------\
+Arellano-Bond test for AR(1) in first differences: z =  -4.16  Pr > z =  0.000\
+Arellano-Bond test for AR(2) in first differences: z =   0.87  Pr > z =  0.385\
+------------------------------------------------------------------------------\
+Sargan test of overid. restrictions: chi2(42)   =  52.83  Prob > chi2 =  0.122\
+  (Not robust, but not weakened by many instruments.)\
+Hansen test of overid. restrictions: chi2(42)   =  62.48  Prob > chi2 =  0.022\
+  (Robust, but weakened by many instruments.)\
+\
+Difference-in-Hansen tests of exogeneity of instrument subsets:\
+  iv(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+    Hansen test excluding group:     chi2(33)   =  43.15  Prob > chi2 =  0.111\
+    Difference (null H = exogenous): chi2(9)    =  19.33  Prob > chi2 =  0.023\
+  iv(L2.lrgdpch, passthru)\
+    Hansen test excluding group:     chi2(41)   =  62.33  Prob > chi2 =  0.017\
+    Difference (null H = exogenous): chi2(1)    =   0.14  Prob > chi2 =  0.706\
+\
+\
+. dcxtab polity4 L.(polity4 lrgdpch) yr* if sample==1, gmm(L.(polity4)) iv( yr*) iv(L2.lrgdpch, passthru) noconstant vce(one) \
+       panel variable:  code_numeric (strongly balanced)\
+        time variable:  year_numeric, 31 to 41\
+                delta:  1 unit\
+(set matafavor preference recorded)\
+\
+Dynamic panel-data estimation: \
+Group variable: code_numeric                    Number of obs      =       747\
+Time variable : year_numeric                    Number of groups   =       114\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    274.76                                      avg =      6.55\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.polity4\
+------------------------------------------------------------------------------\
+------------------------------------------------------------------------------\
+             |           Doubly-Corrected Robust Standard Errors for One-step GMM estimator\
+     polity4 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+     polity4 |\
+         L1. |   .5923308    .111373     5.32   0.000     .3740436    .8106179\
+             |\
+     lrgdpch |\
+         L1. |  -.3472193    .135421    -2.56   0.010    -.6126396   -.0817989\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |          0  (omitted)\
+         yr3 |   .0510339   .0350712     1.46   0.146    -.0177044    .1197722\
+         yr4 |   .0742114   .0485804     1.53   0.127    -.0210045    .1694272\
+         yr5 |   .1357742   .0662375     2.05   0.040      .005951    .2655974\
+         yr6 |    .167893    .084665     1.98   0.047     .0019525    .3338334\
+         yr7 |   .2398791   .0971428     2.47   0.014     .0494827    .4302755\
+         yr8 |   .2971984   .1113568     2.67   0.008     .0789431    .5154537\
+         yr9 |   .3851922   .1180184     3.26   0.001     .1538803    .6165041\
+        yr10 |    .452132   .1356224     3.33   0.001      .186317     .717947\
+        yr11 |    .432008   .1471617     2.94   0.003     .1435763    .7204396\
+------------------------------------------------------------------------------\
+\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+.&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&\
+\
+\
+ xtabond2 polity4 L.(polity4 lrgdpch) yr* if sample==1, gmm(L.(polity4)) iv( yr*) iv(L2.lrgdpch, passthru) noleveleq twostep\
+Favoring speed over space. To switch, type or click on mata: mata set matafavor space, perm.\
+Warning: Two-step estimated covariance matrix of moments is singular.\
+  Using a generalized inverse to calculate optimal weighting matrix for two-step estimation.\
+  Difference-in-Sargan/Hansen statistics may be negative.\
+\
+Dynamic panel-data estimation, two-step difference GMM\
+------------------------------------------------------------------------------\
+Group variable: code_numeric                    Number of obs      =       747\
+Time variable : year_numeric                    Number of groups   =       114\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    560.98                                      avg =      6.55\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+     polity4 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+     polity4 |\
+         L1. |   .6029101   .0486947    12.38   0.000     .5074703      .69835\
+             |\
+     lrgdpch |\
+         L1. |  -.2651931   .0571729    -4.64   0.000      -.37725   -.1531362\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |  -.0202208   .0199265    -1.01   0.310    -.0592759    .0188344\
+         yr3 |          0  (omitted)\
+         yr4 |    .023922   .0190878     1.25   0.210    -.0134894    .0613334\
+         yr5 |   .0886766   .0289564     3.06   0.002     .0319231    .1454302\
+         yr6 |     .10388   .0352807     2.94   0.003     .0347311    .1730289\
+         yr7 |   .1688792   .0391909     4.31   0.000     .0920665    .2456918\
+         yr8 |     .20122   .0440762     4.57   0.000     .1148322    .2876077\
+         yr9 |   .2569833   .0468824     5.48   0.000     .1650954    .3488711\
+        yr10 |   .3117838   .0551611     5.65   0.000     .2036701    .4198976\
+        yr11 |   .3019965   .0576731     5.24   0.000     .1889593    .4150337\
+------------------------------------------------------------------------------\
+Warning: Uncorrected two-step standard errors are unreliable.\
+\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.polity4\
+------------------------------------------------------------------------------\
+Arellano-Bond test for AR(1) in first differences: z =  -3.77  Pr > z =  0.000\
+Arellano-Bond test for AR(2) in first differences: z =   0.81  Pr > z =  0.420\
+------------------------------------------------------------------------------\
+Sargan test of overid. restrictions: chi2(42)   =  52.83  Prob > chi2 =  0.122\
+  (Not robust, but not weakened by many instruments.)\
+Hansen test of overid. restrictions: chi2(42)   =  62.48  Prob > chi2 =  0.022\
+  (Robust, but weakened by many instruments.)\
+\
+Difference-in-Hansen tests of exogeneity of instrument subsets:\
+  iv(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+    Hansen test excluding group:     chi2(33)   =  43.15  Prob > chi2 =  0.111\
+    Difference (null H = exogenous): chi2(9)    =  19.33  Prob > chi2 =  0.023\
+  iv(L2.lrgdpch, passthru)\
+    Hansen test excluding group:     chi2(41)   =  62.33  Prob > chi2 =  0.017\
+    Difference (null H = exogenous): chi2(1)    =   0.14  Prob > chi2 =  0.706\
+\
+\
+. dcxtab polity4 L.(polity4 lrgdpch) yr* if sample==1, gmm(L.(polity4)) iv( yr*) iv(L2.lrgdpch, passthru) noconstant vce(two) \
+       panel variable:  code_numeric (strongly balanced)\
+        time variable:  year_numeric, 31 to 41\
+                delta:  1 unit\
+(set matafavor preference recorded)\
+\
+Dynamic panel-data estimation: \
+Group variable: code_numeric                    Number of obs      =       747\
+Time variable : year_numeric                    Number of groups   =       114\
+Number of instruments = 55                      Obs per group: min =         0\
+Wald chi2(13) =    274.76                                      avg =      6.55\
+Prob > chi2   =     0.000                                      max =         9\
+------------------------------------------------------------------------------\
+Instruments for first differences equation\
+  Standard\
+    L2.lrgdpch\
+    D.(yr1 yr2 yr3 yr4 yr5 yr6 yr7 yr8 yr9 yr10 yr11)\
+  GMM-type (missing=0, separate instruments for each period unless collapsed)\
+    L(1/10).L.polity4\
+------------------------------------------------------------------------------\
+------------------------------------------------------------------------------\
+             |           Doubly-Corrected Robust Standard Errors for Two-step GMM estimator\
+     polity4 |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]\
+-------------+----------------------------------------------------------------\
+     polity4 |\
+         L1. |   .6056323   .1171741     5.17   0.000     .3759752    .8352893\
+             |\
+     lrgdpch |\
+         L1. |  -.2445092   .1124334    -2.17   0.030    -.4648745   -.0241439\
+             |\
+         yr1 |          0  (omitted)\
+         yr2 |  -.1041124   .0477061    -2.18   0.029    -.1976145   -.0106102\
+         yr3 |  -.0815806   .0385247    -2.12   0.034    -.1570876   -.0060735\
+         yr4 |  -.0633692   .0242107    -2.62   0.009    -.1108213   -.0159171\
+         yr5 |          0  (omitted)\
+         yr6 |   .0107945   .0279082     0.39   0.699    -.0439046    .0654936\
+         yr7 |   .0755301   .0348183     2.17   0.030     .0072874    .1437728\
+         yr8 |   .1016073   .0479986     2.12   0.034     .0075318    .1956828\
+         yr9 |   .1601226   .0497349     3.22   0.001     .0626441    .2576012\
+        yr10 |   .2122651   .0650651     3.26   0.001     .0847398    .3397904\
+        yr11 |   .1974796   .0725733     2.72   0.007     .0552384    .3397207\
+------------------------------------------------------------------------------\
+\
+. \
+}
