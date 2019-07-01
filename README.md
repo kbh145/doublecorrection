@@ -1,4 +1,4 @@
-# Doubly-corrected robust standard errors for GMM estimators 
+# Doubly-corrected robust standard errors for GMM 
 
 STATA code for Doubly Corrected Robust Variance Estimator for Linear GMM as in Hwang, Kang and Lee (2019, Working Paper). 
 
