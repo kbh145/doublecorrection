@@ -1,6 +1,6 @@
 # Doubly-corrected robust standard errors for GMM 
 
-STATA code for Doubly Corrected Robust Variance Estimator for Linear GMM as in Hwang, Kang, and Lee (2019, Working Paper). 
+STATA code for Doubly Corrected Robust Variance Estimator for Linear GMM as in Hwang, Kang, and Lee (2019, Working Paper), Hansen and Lee (2019, Working Paper) 
 
 This implements robust-standard error of one-step (2SLS), two-step, and iterated-GMM and provides finite sample corrections in addition to the well-known Windmeijer (2005, Journal of Econometrics) and conventional (heteroskedasticity-robust) standard error. Further, reported standard error is also valid under general model misspecification (e.g., invalid instruments, misspecified lag specifications, heterogeneous effects, etc). 
 
@@ -8,3 +8,15 @@ This implements robust-standard error of one-step (2SLS), two-step, and iterated
 dcivreg.ado : Stata code for implementing doubly-corrected robust variance estimator in cross-sectional IV/GMM setup. See attached help file (dcivreg.sthlp) for details.
 
 dcxtab.ado : Stata code for implementing doubly-corrected robust variance estimator in dynamic panel data setup. Usage of command is similar to xtabond2.
+
+Contributors: 
+
+Bruce Hansen, University of Wisconsin-Madison
+Jungbin Hwang, University of Connecticut
+Byunghoon Kang, Lancaster University
+Seojeong Lee, University of New SouthWales
+
+Related Papers: 
+
+Hansen and Lee (2019), Inference for Iterated GMM under Misspecification
+Hwang, Kang and Lee (2019), A Doubly Corrected Robust Variance Estimator for Linear GMM
