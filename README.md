@@ -18,7 +18,7 @@ This implements robust-standard error of one-step (2SLS), two-step, and iterated
 
 [Seojeong Lee](https://sites.google.com/site/misspecifiedjay/), University of New SouthWales
 
-**Related Papers: **
+**Related Papers:**
 
 Hansen and Lee (2019): Inference for Iterated GMM under Misspecification
 Hwang, Kang and Lee (2019): A Doubly Corrected Robust Variance Estimator for Linear GMM
