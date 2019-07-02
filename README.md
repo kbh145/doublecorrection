@@ -11,10 +11,10 @@ dcxtab.ado : Stata code for implementing doubly-corrected robust variance estima
 
 Contributors: 
 
-Bruce Hansen, University of Wisconsin-Madison
-Jungbin Hwang, University of Connecticut
-Byunghoon Kang, Lancaster University
-Seojeong Lee, University of New SouthWales
+[Bruce Hansen](https://www.ssc.wisc.edu/~bhansen/), University of Wisconsin-Madison
+[Jungbin Hwang](https://hwang.econ.uconn.edu/), University of Connecticut
+[Byunghoon Kang](https://sites.google.com/site/davidbhkang/), Lancaster University
+[Seojeong Lee](https://sites.google.com/site/misspecifiedjay/), University of New SouthWales
 
 Related Papers: 
 
