@@ -38,11 +38,52 @@ and {cmd:ivopt} is
 
 {p 4 4 2}{cmd:aweight}s, {cmd:pweight}s, and {cmd:fweight}s are allowed. {cmd:fweights} must be constant over time. See help {help weights}.
 
-{p 4 4 2}
-{cmdab:dcxtab} implements robust-standard error of one-step (2SLS), two-step (with {cmdab:two:step}), and iterated-GMM with (with {cmdab:iter:ated}) and provides finite sample corrections (with {cmdab:dc:}) in addition to the well-known Windmeijer (2005, Journal of Econometrics) (with {cmdab:wind:meijer}) and conventional (heteroskedasticity-robust) standard error (with {cmdab:conv:entional}). Further, reported standard error is also valid under general model misspecification ({e.g., invalid instruments, misspecified lag specifications, heterogeneous effects, etc}).
 
-{p 4 4 2}
+{marker description}{...}
+{title:Description}
+
+{pstd}
 {cmdab:dcxtab} shares the same syntax strcutre with a popular user-written command {cmd:xtabond2} by Roodman (2009); see help {help xtabond2}
+
+{pstd}
+{cmdab:dcxtab} implements robust-standard error of one-step (2SLS), two-step (with {cmdab:two:step}), and /// 
+iterated-GMM with (with {cmdab:iter:ated}) and provides estimation of standard errors (s.e.) (with {cmdab:dc:})
+robust to both misspecifecation ({e.g., invalid instruments, misspecified lag specifications, heterogeneous effects, etc}) ///
+and finite sample corrections  in GMM dynamic panel estimator. 
+
+{pstd}
+{cmdab:dcxtab} also supports the well-known s.e. formula by Windmeijer (2005, Journal of Econometrics) (with {cmdab:wind:meijer}) as well as conventional ///
+ (heteroskedasticity-robust) standard error (with {cmdab:conv:entional}). 
+
+{marker options}{...}
+{title:Options}
+
+{dlgtab:GMM estimators}
+
+{pstd}{opt ONEstep or default} provides one-step GMM estimator whose weighting, the inverse of Z'HZ where Z is the instrument matrix, does not depend on model parameters. 
+For difference GMM {cmdab:noleveleq}, the {bind:(T-1)x(T-1)} blocks of H by default it is: {p_end}
+
+{p 12 12 2}{space 1}2 -1{space 2}0 ...{p_end}
+{p 12 12 2}-1{space 2}2 -1 ...{p_end}
+{p 12 12 2}{space 1}0 -1{space 2}2 ...{p_end}
+{p 12 12 2}{space 1}.{space 2}.{space 2}. ...{p_end}
+
+{pstd}{opt TWOstep} provides two-step estimator in Hansen (1984) instead of the one-step.
+
+{pstd}{opt ITERated} provides the iterated GMM estimator which is obtained by iterating the two-step efficient GMM estimator until convergence. 
+By iteration the arbitrary dependence of the final estimator on the previous step estimators (one-step, two-step, and so on) disappears. See Lee and Hansen (2019) for details. 
+
+{dlgtab:Robust Standard Errors}
+
+{pstd} {opt CONVentional} computes a conventional form of standard errors which is consistent in the presence of any pattern of heteroskedasticity and autocorrelation within panels.
+However, the conventional GMM standard errors are typically downward biased in finite-sample, and can be inconsistent under moment misspecification.
+
+{pstd} {opt WIND} provides a finite-sample corrected standard error of two-step GMM estimator, provided by Windmeijer (2005). The formula, however, only takes into account for the extra variability due to using
+the estimated parameter in the two-step GMM weight matrix, and it can be inconsistent under moment misspecification. See Hwang, Kand, and Lee (2019) for details.
+
+{pstd} {opt DC or default} provides a doubly corrected standard error for one-step, two-step, and iterated GMM estimator. The corrected standard error formula considers both finite sample bias of two-step estimation and bias from overidentication of the moment equation model. 
+It is consistent regardless of whether the moment equation model is invalid (misspecified) or not. See Hwang, Kang, and Lee (2019), and Lee and Hansen (2019) for details. 
+
 
 {marker examples}{...}
 {title:Examples}
@@ -80,7 +121,7 @@ and {cmd:ivopt} is
 {phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) dc"}{p_end}
 
 {pstd} (2-i) Compute doubly corrected robust standard error for two-step system-GMM estimation. {p_end}
-{phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) dc"}{p_end}
+{phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) two dc"}{p_end}
 
 {pstd} (2-ii) Next two are equivalent, providing Windmeijer-corrected two-step system-GMM standard errors. {p_end}
 
@@ -90,6 +131,47 @@ and {cmd:ivopt} is
 
 {pstd} (3) Compute doubly corrected robust standard error for iterated system-GMM estimation. {p_end}
 {phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant iter dc"}{p_end}
+
+
+{marker saved_results}{...}
+{title:Saved results}
+
+{pstd}
+{cmd:dcxtab} saves the following in {cmd:e()}:
+
+{synoptset 20 tabbed}{...}
+{col 4}Scalars
+
+{synopt:{cmd:e(N)}} Number of complete observations in untransformed data (system GMM) or transformed data (difference GMM) {p_end}
+{synopt:{cmd:e(N_g)}} Number of included individuals {p_end}
+{synopt:{cmd:e(g_min)}} Lowest number of observations in an included individual {p_end}
+{synopt:{cmd:e(g_max)}} Highest number of observations in an included individual {p_end}
+{synopt:{cmd:e(g_avg)}} Average number of observations per included individual {p_end} 
+{synopt:{cmd:e(iterations)}} Number of iterations after iterated GMM estimation {p_end} 
+
+{synoptset 20 tabbed}{...}
+{col 4}Macros
+
+{synopt:{cmd:e(esttype)}} "system" or "difference"{p_end} 
+{synopt:{cmd:e(vcetype)}} "Conventional s.e. " for {cmd:CONVentional}, "Windmeijer s.e." for {cmd:WINDmeijer}, "Doubly Corrected s.e." for {cmd:DC} {p_end} 
+{synopt:{cmd:e(transform)}} "first differences" {p_end}
+{synopt:{cmd:e(ivinsts{it:i})}} Variables listed in {cmd:ivstyle} group {it:i} {p_end} 
+{synopt:{cmd:e(gmminsts{it:i})}} Variables listed in {cmd:gmmstyle} group{p_end} 
+{synopt:{cmd:e(tvar)}} Time variable{p_end} 
+{synopt:{cmd:e(ivar)}} Individual (panel) variable{p_end} 
+{synopt:{cmd:e(depvar)}} Dependent variable{p_end}
+{synopt:{cmd:e(xvars)}} List of regressors{p_end} 
+{synopt:{cmd:e(properties)}} "system" or "difference"{p_end}
+
+{synoptset 20 tabbed}{...}
+{col 4}Matrices
+{synopt:{cmd:e(b)}} Coefficient vector{p_end}
+{synopt:{cmd:e(V)}} Variance-covariance matrix of the estimators{p_end}
+
+{synoptset 20 tabbed}{...}
+{col 4}Functions
+{synopt:{cmd:e(sample)}} Marks estimation sample{p_end}
+{p2colreset}{...}
 
 
 
@@ -106,6 +188,7 @@ Dynamic Panel data estimation using DPD98 for Gauss: A guide for users.{p_end}
 Another look at the instrumental variable estimation of error-components models. {it:Journal of Econometrics} 68: 29-51.{p_end}
 {p 4 8 2}Blundell, R., and S. Bond. (1998).
 Initial conditions and moment restrictions in dynamic panel data models. {it:Journal of Econometrics} 87: 115-43.{p_end}
+{p 4 8 2}Hansen, L. P. (1982). Large sample properties of generalized method of moments estimators. Econometrica: Journal of the Econometric Society, 1029-1054. {p_end}
 {p 4 8 2}Hwang J., Kang B., and Lee S. (2019) A Doubly Corrected Robust Variance Estimator for Linear GMM, {it:working paper}.{p_end}
 {p 4 8 2}Lee, S. (2017) Consistent Variance Estimator for 2SLS When Instruments Identify Different LATEs. {it:Journal of Business & Economic Statistics}.{p_end}
 {p 4 8 2}Lee, S. and Hansen, B. E.(2019) Inference for iterated GMM under misspecification and clustering, {it: working paper}.{p_end}
