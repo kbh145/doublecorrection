@@ -19,6 +19,7 @@ help for {hi:dcxtab}
 {cmdab:dc:}
 {cmdab:l:evel:(}{it:#}{cmd:)}
 {cmdab:noc:onstant}
+{cmdab:sm:all}
 {cmdab:nol:eveleq}
 {cmd:gmmopt} [{cmd:gmmopt} {it:...}]
 {cmd:ivopt} [{cmd:ivopt} {it:...}]
@@ -43,13 +44,11 @@ and {cmd:ivopt} is
 {title:Description}
 
 {pstd}
-{cmdab:dcxtab} shares the same syntax strcutre with a popular user-written command {cmd:xtabond2} by Roodman (2009); see help {help xtabond2}
+{cmdab:dcxtab} shares the same syntax structure with a popular user-written command {cmd:xtabond2} by Roodman (2009); see help {help xtabond2}
 
 {pstd}
-{cmdab:dcxtab} implements robust-standard error of one-step (2SLS), two-step (with {cmdab:two:step}), and /// 
-iterated-GMM with (with {cmdab:iter:ated}) and provides estimation of standard errors (s.e.) (with {cmdab:dc:})
-robust to both misspecifecation ({e.g., invalid instruments, misspecified lag specifications, heterogeneous effects, etc}) ///
-and finite sample corrections  in GMM dynamic panel estimator. 
+{cmdab:dcxtab} implements robust-standard error of one-step (2SLS), two-step (with {cmdab:two:step}), and iterated-GMM with (with {cmdab:iter:ated}) and provides estimation of standard errors (s.e.) (with {cmdab:dc:})
+robust to both misspecification ({e.g., invalid instruments, misspecified lag specifications, heterogeneous effects, etc}) and finite sample corrections  in GMM dynamic panel estimator. 
 
 {pstd}
 {cmdab:dcxtab} also supports the well-known s.e. formula by Windmeijer (2005, Journal of Econometrics) (with {cmdab:wind:meijer}) as well as conventional ///
@@ -68,10 +67,10 @@ For difference GMM {cmdab:noleveleq}, the {bind:(T-1)x(T-1)} blocks of H by defa
 {p 12 12 2}{space 1}0 -1{space 2}2 ...{p_end}
 {p 12 12 2}{space 1}.{space 2}.{space 2}. ...{p_end}
 
-{pstd}{opt TWOstep} provides two-step estimator in Hansen (1984) instead of the one-step.
+{pstd}{opt TWOstep} provides two-step estimator in Hansen (1982) instead of the one-step.
 
 {pstd}{opt ITERated} provides the iterated GMM estimator which is obtained by iterating the two-step efficient GMM estimator until convergence. 
-By iteration the arbitrary dependence of the final estimator on the previous step estimators (one-step, two-step, and so on) disappears. See Lee and Hansen (2019) for details. 
+By iteration the arbitrary dependence of the final estimator on the previous step estimators (one-step, two-step, and so on) disappears. See Hansen and Lee (2019) for details. 
 
 {dlgtab:Robust Standard Errors}
 
@@ -79,10 +78,10 @@ By iteration the arbitrary dependence of the final estimator on the previous ste
 However, the conventional GMM standard errors are typically downward biased in finite-sample, and can be inconsistent under moment misspecification.
 
 {pstd} {opt WIND} provides a finite-sample corrected standard error of two-step GMM estimator, provided by Windmeijer (2005). The formula, however, only takes into account for the extra variability due to using
-the estimated parameter in the two-step GMM weight matrix, and it can be inconsistent under moment misspecification. See Hwang, Kand, and Lee (2019) for details.
+the estimated parameter in the two-step GMM weight matrix, and it can be inconsistent under moment misspecification. See Hwang, Kang, and Lee (2019) for details.
 
-{pstd} {opt DC or default} provides a doubly corrected standard error for one-step, two-step, and iterated GMM estimator. The corrected standard error formula considers both finite sample bias of two-step estimation and bias from overidentication of the moment equation model. 
-It is consistent regardless of whether the moment equation model is invalid (misspecified) or not. See Hwang, Kang, and Lee (2019), and Lee and Hansen (2019) for details. 
+{pstd} {opt DC or default} provides a doubly corrected standard error for one-step, two-step, and iterated GMM estimator. The corrected standard error formula considers both finite sample bias of two-step estimation and bias from overidentified moment equation model. 
+It is consistent regardless of whether the moment equation model is invalid (misspecified) or not. See Hwang, Kang, and Lee (2019), and Hansen and Lee(2019) for details. 
 
 
 {marker examples}{...}
@@ -125,8 +124,8 @@ It is consistent regardless of whether the moment equation model is invalid (mis
 
 {pstd} (2-ii) Next two are equivalent, providing Windmeijer-corrected two-step system-GMM standard errors. {p_end}
 
-{phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) two wind"}{p_end}
-{phang2}{stata "xtabond2 n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) two robust"}{p_end}
+{phang2}{stata "dcxtab n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) two wind small "}{p_end}
+{phang2}{stata "xtabond2 n l(1/2).n l(0/1).(w ys) k yr*, gmm(l.n) iv(yr* l(0/1).(w ys) k) noconstant h(2) two robust small"}{p_end}
 
 
 {pstd} (3) Compute doubly corrected robust standard error for iterated system-GMM estimation. {p_end}
@@ -148,6 +147,11 @@ It is consistent regardless of whether the moment equation model is invalid (mis
 {synopt:{cmd:e(g_max)}} Highest number of observations in an included individual {p_end}
 {synopt:{cmd:e(g_avg)}} Average number of observations per included individual {p_end} 
 {synopt:{cmd:e(iterations)}} Number of iterations after iterated GMM estimation {p_end} 
+{synopt:{cmd:e(chi2)}} Wald statistic (if {cmd:small} not specified) {p_end} 
+{synopt:{cmd:e(chi2p)}} p-value of Wald statistic (if {cmd:small} not specified) {p_end} 
+{synopt:{cmd:e(F)}} F-statistic {p_end} 
+{synopt:{cmd:e(Fp)}} p-value of F-statistic {p_end} 
+
 
 {synoptset 20 tabbed}{...}
 {col 4}Macros
@@ -162,6 +166,7 @@ It is consistent regardless of whether the moment equation model is invalid (mis
 {synopt:{cmd:e(depvar)}} Dependent variable{p_end}
 {synopt:{cmd:e(xvars)}} List of regressors{p_end} 
 {synopt:{cmd:e(properties)}} "system" or "difference"{p_end}
+{synopt:{cmd:e(small)}} "small" for small {p_end}
 
 {synoptset 20 tabbed}{...}
 {col 4}Matrices
@@ -173,8 +178,6 @@ It is consistent regardless of whether the moment equation model is invalid (mis
 {synopt:{cmd:e(sample)}} Marks estimation sample{p_end}
 {p2colreset}{...}
 
-
-
 {marker references}{...}
 {title:References}
 
@@ -183,23 +186,23 @@ It is consistent regardless of whether the moment equation model is invalid (mis
 Some tests of specification for panel data: Monte Carlo evidence and an
 application to employment equations. {it:The Review of Economic Studies} 58: 277-97.{p_end}
 {p 4 8 2}Arellano, M. and S. Bond. (1998).
-Dynamic Panel data estimation using DPD98 for Gauss: A guide for users.{p_end}
+Dynamic panel data estimation using DPD98 for Gauss: A guide for users.{p_end}
 {p 4 8 2}Arellano, M. and O. Bover. (1995).
 Another look at the instrumental variable estimation of error-components models. {it:Journal of Econometrics} 68: 29-51.{p_end}
 {p 4 8 2}Blundell, R., and S. Bond. (1998).
 Initial conditions and moment restrictions in dynamic panel data models. {it:Journal of Econometrics} 87: 115-43.{p_end}
-{p 4 8 2}Hansen, L. P. (1982). Large sample properties of generalized method of moments estimators. Econometrica: Journal of the Econometric Society, 1029-1054. {p_end}
-{p 4 8 2}Hwang J., Kang B., and Lee S. (2019) A Doubly Corrected Robust Variance Estimator for Linear GMM, {it:working paper}.{p_end}
-{p 4 8 2}Lee, S. (2017) Consistent Variance Estimator for 2SLS When Instruments Identify Different LATEs. {it:Journal of Business & Economic Statistics}.{p_end}
-{p 4 8 2}Lee, S. and Hansen, B. E.(2019) Inference for iterated GMM under misspecification and clustering, {it: working paper}.{p_end}
+{p 4 8 2}Hwang J., Kang B., and Lee S. (2019) A Doubly corrected robust variance estimator for linear GMM, {it:working paper}.{p_end}
+{p 4 8 2}Lee, S. (2017) Consistent variance estimator for 2SLS when instruments identify different LATEs. {it:Journal of Business & Economic Statistics}.{p_end}
+{p 4 8 2}Hansen, B. E. and Lee, S. (2019) Inference for iterated GMM under misspecification and clustering, {it: working paper}.{p_end}
 {p 4 8 2}Roodman, D. (2009). How to Do xtabond2: An Introduction to "Difference" and "System" GMM in Stata. {it:Stata Journal} 9(1): 86-136.{p_end}
 {p 4 8 2}Windmeijer, F. (2005). A finite sample correction for the variance of linear efficient two-step GMM estimators. {it: Journal of Econometrics} 126: 25-51.{p_end}
 
 {title:Author}
-{p 4}Brunce Hansen (University of Wisconsin, bruce.hansen@wisc.edu ){p_end}
+
 {p 4}Jungbin Hwang (University of Connecticut, jungbin.hwang@uconn.edu ){p_end}
-{p 4}Byunghoon Kang (Lancaster University, b.kang1@lancaster.ac.uk ){p_end}
-{p 4}Seojeong Lee (University of New South Wales jay.lee@unsw.edu.au ){p_end}
+{p 4}Byunghoon (David) Kang (Lancaster University, b.kang1@lancaster.ac.uk ){p_end}
+{p 4}Seojeong (Jay) Lee (University of New South Wales jay.lee@unsw.edu.au ){p_end}
+
 {title:Also see}
 
 {p 4 13 2}

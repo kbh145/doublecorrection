@@ -1,3 +1,5 @@
+*! dcivreg version 1.90 - Last update: August 29th, 2019
+*  - added an option of "small" sample correction 
 *! dcivreg version 1.80 - Last update: August 3rd, 2019
 *  - corrected F-statistics (e(chi2)) and corresponding p-value (e(chi2p))
 *! dcivreg version 1.70 - Last update: July 14th, 2019
@@ -33,19 +35,19 @@
 *  - Apply Woodbury formula to compute an inverse of non-symetric square matrix when computing DC-standard errors for iterated GMM estimators  
 
 
-*! Authors: Bruce Hansen ( bruce.hansen@wisc.edu)
-*!			Jungbin Hwang ( jungbin.hwang@uconn.edu )
+*! Authors:	Jungbin Hwang ( jungbin.hwang@uconn.edu )
 *!          Byunghoon Kang ( b.kang1@lancaster.ac.uk )
 *!		    Seojeong Lee ( jay.lee@unsw.edu.au )
 *! NOTE
-*! -dcxtab.ado- uses a bulit-in STATA command -xtabond2.ado -.
-*! -syntax of running programm is highly compatible to xtabond2.ado by David Roodman 
+*! -dcxtab.ado- uses a bulit-in STATA command -xtabond2.ado to construct IV matrix in dynamic panel system-.
+*! -syntax of running programm is highly compatible to xtabond2.ado by David Roodman. See Hwang, Kang, and Lee (2019) 
 *!
 
 cap program drop dcxtab
 
 program dcxtab, eclass sortpreserve
 version 8 
+
 * The eclass sets the e() macros, scalars, and matrices other than b, V, and Cns returned 
 * by estimation commands.
 * The option sortpreserve specifies that the program, during its execution, will re-sort the data and that therefore
@@ -76,33 +78,33 @@ qui   local N_all `r(imax)'
 
 else {
 
-    syntax varlist(`fv' ts) [aw pw fw] [if] [in], [ONE TWOstep noConstant ITERated WIND CONVentional DC noLeveleq  H(integer 3) * ///
-	Robust ORthogonal SMall DPDS2 ARLevels noDiffsargan ]
+    syntax varlist(`fv' ts) [aw pw fw] [if] [in], [ONE TWOstep noConstant ITERated SMall WIND CONVentional DC noLeveleq  H(integer 3) * ///
+	Robust ORthogonal DPDS2 ARLevels noDiffsargan ]
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////// Error messages with invalid options ////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
-	// Error messages with invalid options
-	
-	if ("`robust'"!="") + ("`orthogonal'"!="") + ("`small'"!="")+ ("`arlevels'"!="")  /// 
+	if ("`robust'"!="") + ("`orthogonal'"!="") + ("`arlevels'"!="")  /// 
 	+ ("`nodiffsargan'"!="")>= 1 {
-		di as err " Option(s), "  "`robust'"  " `orthogonal' " "`small'" " `arlevels' " "`diffsargan'"   ", is (are) not avaialble."
+		di as err " Option(s), "  "`robust'"  " `orthogonal' " " `arlevels' " "`diffsargan'"   ", is (are) not avaialble."
 		exit 198
 	} 
 	
 	
-	* Allowing for 3 types of standard error in panel GMM regression model: 
-	* i) One-step GMM estimator
-	* ii) Two-step GMM estimator	
-	* iii) Iterated GMM estimator 	
+* Allowing for 3 types of standard error in panel GMM regression model: 
+	
+* i) One-step GMM estimator ii) Two-step GMM estimator iii) Iterated GMM estimator 	
+	
 	if ("`wind'"!="") + ("`conventional'"!="") + ("`dc'"!="") >= 2 {
 		di as err "Not allowed to run more than one of the options of ONE, TWOstep, and ITERated ."
 		exit 198
 	} 
 	
 	
-	* Allowing for 3 types of standard error in panel GMM regression model: 
-	* i) Doubly-Corrected or Misspecification Robust formula 
-	* ii) Windmeijer's finite sample corrected formula 	
-	* iii) Conventional sandwich formula 
+* Allowing for 3 types of standard error in panel GMM regression model: 
+
+* i) Doubly-Corrected or Misspecification Robust formula ii) Windmeijer's finite sample corrected formula  iii) Conventional sandwich formula 
 	
 
 	if ("`robust'"!="") + ("`twostep'"!="") + ("`iterated'"!="") >= 2 {
@@ -110,8 +112,6 @@ else {
 		exit 198
 	} 
 
-	
-	
 	
 	if `h'!=1 & `h'!=2 & `h'!=3 {
 		di as err `"h(`h') is invalid."'
@@ -122,6 +122,8 @@ else {
 	
 	local level_type = "`leveleq'" ==""
     local const_type = "`constant'" ==""
+
+	
 	* Specify weighting type of matrices 
 	
 	
@@ -132,8 +134,10 @@ else {
 	}
 
 	
-		
-*************************************************************************************************************		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+//////////////////////////////////Run xtabond2 to construct IV matrix and other output returned.////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
 
 	marksample touse
 	local svmat svmat
@@ -141,13 +145,28 @@ else {
 
 	qui mata: mata set matafavor speed	
 	 if (("`one'"!="") + ("`twostep'"!="") + ("`iterated'"!="") == 0) | ("`one'"!="") {
-	qui xtabond2 `varlist' `if' `in', svmat robust `constant' `options' `leveleq'   	
+	 
+	 if "`small'" != "" {
+	 qui xtabond2 `varlist' `if' `in', svmat small robust `constant' `options' `leveleq' 
+	 }
+	
+	 else {
+     qui xtabond2 `varlist' `if' `in', svmat robust `constant' `options' `leveleq'   			
+	 }
 	
 	} 
 	
 	
 	if  ("`twostep'"!="") | ("`iterated'"!="") {
-	qui xtabond2 `varlist' `if' `in', svmat two robust `constant' `options' `leveleq'  		
+	
+	if "`small'" != "" {	 
+	qui xtabond2 `varlist' `if' `in', svmat small two robust `constant' `options' `leveleq'  		
+	}
+	
+	else{
+	qui xtabond2 `varlist' `if' `in', svmat two robust `constant' `options' `leveleq'  			
+	}
+	
 	} 
 	}
 	 
@@ -156,8 +175,10 @@ else {
 			display as err  "Program xtabond2.ado is found.  Please download from SSC by typing in command line: ssc install xtabond2"
 	exit		
 	}
-		
- ********************* 1) Robust Variances for (One-step) GMM Estimations  ************************************************ 
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+///////////////////////1) Robust Variances for (One-step) GMM Estimations /////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 	
 	if (("`one'"!="") + ("`twostep'"!="") + ("`iterated'"!="") == 0) | ("`one'"!="") {
@@ -188,7 +209,9 @@ else {
    	
 	 }
 	
-********************* 2) Robust Variances for (Two-step) GMM Estimations  ************************************************ 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+///////////////////// 2) Robust Variances for (Two-step) GMM Estimations //////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
 	
 	if  ("`twostep'" != "") {
@@ -218,7 +241,9 @@ else {
 	}
 	
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 ********************* 3) Robust Variances for Iterated GMM Estimations  ************************************************ 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
 
 	if  ("`iterated'" != "") {
@@ -259,8 +284,9 @@ else {
     
     }
  
-    
-*************************************************************************************************************		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
 * extract variables for dependent variable, regressors, and instruments 
 	  
 	tokenize `varlist'
@@ -275,16 +301,32 @@ else {
 	
 	
 * extract local scalars
+
     local g_min `e(g_min)'
 	local g_max `e(g_max)'	
 	local g_avg `e(g_avg)'	
     local N_g `e(N_g)'
+	local N `e(N)'
+	local k `e(df_m)'
 	
+	
+	if "`e(small)'" != "" {
+	
+	scalar F = Chi_2[1,1] * ((`N_g'- ("`constant'" == ""))/`N_g') * (1/`e(df_m)')
+	scalar Fp  = 1 - F(`e(df_m)',`N_g'- ("`constant'" == ""),F)
+	local F = F
+	local Fp	= Fp
+	
+	}
+	
+	else{
 	
 	scalar Chi_2 = Chi_2[1,1]
-	scalar Chi_2p = 1-chi2(`e(df_m)',Chi_2)
-    local chi2  = Chi_2
+	scalar Chi_2p = 1- chi2(`e(df_m)',Chi_2)   
+	local chi2  = Chi_2
 	local chi2p	= Chi_2p
+	
+	}
 
 		
 * extract local macros
@@ -302,8 +344,10 @@ else {
 	marksample touse
 	markout `touse' `id'
 	
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 ***************************************************** Pre-return content *****************************************************
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
 * Basic description of regression data   
     di _n as txt "Dynamic panel-data estimation: " 
 	di as txt "Group variable: " as res abbrev("`e(ivar)'", 12) as txt _col(49) "Number of obs      = " as res %9.0f e(N)
@@ -312,16 +356,18 @@ else {
 
 	
 	if "`e(small)'" != "" {
-	 	di as txt "F(" as res e(df_m) as txt ", " as res e(df_r) as txt ")" _col(15) "= " as res %9.2f e(F) _col(64) as txt "avg = " as res %9.2f e(g_avg)
-		di as txt "Prob > F" _col(15) "=" as res %10.3f e(F_p) _col(64) as txt "max = " as res %9.0g e(g_max)
+	 	di as txt "F(" as res e(df_m) as txt ", " as res e(df_r) as txt ")" _col(15) "= " as res %9.2f `F' _col(64) as txt "avg = " as res %9.2f e(g_avg)
+		di as txt "Prob > F" _col(15) "=" as res %10.3f `Fp' _col(64) as txt "max = " as res %9.0g e(g_max)
 	}
 	else {
 	 	di as txt "Wald chi2(" as res e(df_m) as txt ")" _col(15) "= " as res %9.2f `chi2' _col(64) as txt "avg = " as res %9.2f e(g_avg)
 		di as txt "Prob > chi2" _col(15) "=" as res %10.3f `chi2p' _col(64) as txt "max = " as res %9.0g e(g_max)
 	}
-
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 * Specify GMM instrument variables in dynamic panel model  
-********************************************************************************************************
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
 	
 di as txt "{hline 78}"
 	foreach retval in ivequation ivpassthru ivmz gmmequation gmmpassthru gmmcollapse gmmlaglimits gmmorthogonal {
@@ -394,8 +440,20 @@ local eqname `e(transform)'
 	matrix colnames `b' = `xvars' 	
     matrix colnames `V' = `xvars'
     matrix rownames `V' = `xvars'
-		
+
+	local dfr = `N_g'- ("`constant'" == "")
+
+	if "`small'" != "" {
+		matrix `V' = `V' *  `N'/(`N'-`k'+1)*`N_g'/(`N_g'-1)  
+	    ereturn post `b' `V', depname(`depvarname') obs(`N') dof(`dfr') esample(`touse') buildfvinfo  
+ 		
+			}
+	
+	else  {
+	
 	ereturn post `b' `V', esample(`touse') buildfvinfo depname(`depvarname')
+	
+	}
  	
 	
 * Post the estimation results: Scalars 
@@ -404,9 +462,21 @@ local eqname `e(transform)'
 	ereturn scalar g_min = `g_min'
 	ereturn scalar g_max = `g_max'	
    	ereturn  scalar g_avg = `N'/`N_g'
-    ereturn scalar chi2 = `chi2'
-	ereturn scalar chi2p = `chi2p'
+	
+    
+	 if "`small'" != "" {
+	
+	ereturn scalar F = `F'
+	ereturn scalar Fp = `Fp'
 
+	}
+	
+	else {
+	
+	ereturn scalar chi2 = `chi2'
+	ereturn scalar chi2p = `chi2p'
+	
+	}
 	if "`vce'" == "iter" {
 	ereturn scalar iter = iter
 	}
@@ -417,7 +487,7 @@ local eqname `e(transform)'
 	ereturn local xvars `xvars'
 	ereturn local ivar `id'
 	ereturn local tvar `t'
-	
+	ereturn local small `small'
 
 	ereturn local gmminsts1 `gmminsts1'
 	ereturn local ivinsts1 `ivinsts1'		
@@ -816,9 +886,7 @@ void se_one( string scalar bname, string scalar N_g_name,  string scalar Vname)
 	Chi_2 = b_one' *invsym(V_one) * b_one 
 	
 	}
-
 	st_matrix("Chi_2",Chi_2)
-
 	st_matrix(bname, b_one')
 	st_numscalar(N_g_name, N)
 	st_matrix(Vname, V_one)
@@ -839,7 +907,6 @@ void se_two( string scalar bname,  string scalar N_g_name,  string scalar Vname)
 				   H_two, temp_psi_two_sq, temp_V_two, temp_C, temp_D, temp_D_1g, temp_D_2g, ///
 				   V_two, C_one_two, D_hat, V_dc_two, se_dc_two, V_std, V_index 
     real scalar    n, kx, kz, N, temp_dim, N_all
-
 	const_type = strtoreal(st_local("const_type"))
 	level_type = strtoreal(st_local("level_type"))
 	h_type = strtoreal(st_local("h_type"))
@@ -1209,9 +1276,7 @@ void se_two( string scalar bname,  string scalar N_g_name,  string scalar Vname)
 	Chi_2 = b_two' *invsym(V_dc_two) * b_two 
 	
 	}
-
 	st_matrix("Chi_2",Chi_2)
-
 	
 	st_matrix(bname, b_two')
     st_numscalar(N_g_name, N)
@@ -1476,9 +1541,7 @@ void se_iter( string scalar bname,  string scalar N_g_name,  string scalar Vname
 	Chi_2 = b_iter' *invsym(V_hat_iter) * b_iter 
 	
 	}
-
 	st_matrix("Chi_2",Chi_2)
-
 	
 	
 	
@@ -1490,3 +1553,5 @@ void se_iter( string scalar bname,  string scalar N_g_name,  string scalar Vname
 	
 }
 end
+
+
