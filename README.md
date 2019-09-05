@@ -10,8 +10,6 @@ This implements robust-standard error of one-step (2SLS), two-step, and iterated
 
 **Contributors:** 
 
-[Bruce Hansen](https://www.ssc.wisc.edu/~bhansen/), University of Wisconsin-Madison
-
 [Jungbin Hwang](https://hwang.econ.uconn.edu/), University of Connecticut
 
 [Byunghoon Kang](https://sites.google.com/site/davidbhkang/), Lancaster University
